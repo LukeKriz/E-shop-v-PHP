@@ -1,0 +1,92 @@
+/* Toto CSS je upraveno pomocí voodoo magie tak, aby ho správně načetlo mPDF. Neměnit. */
+
+.invoice {
+    font-family: arial, serif;
+    font-size: 15px;
+}
+
+.half-box {
+    float: left;
+    width: 50%;
+}
+
+.invoice-hr {
+    border: 0;
+    color: #3b94e0;
+    background: #3b94e0;
+    height: 5px;
+}
+
+.clear {
+    clear: both;
+}
+
+.text-right {
+    text-align: right;
+}
+
+/* Nadpisy */
+
+.invoice h1 {
+    font-family: Verdana, serif;
+    font-size: 20px;
+    color: #575757;
+    margin-bottom: 5px;
+}
+
+.invoice h2 {
+    font-family: Verdana, serif;
+    font-size: 1em;
+    color: #787878;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+/* Tabulky */
+
+.invoice table th {
+    color: #787878;
+}
+
+.invoice-first-column {
+    padding-left: 0;
+    text-align: left;
+}
+
+.total-table {
+    margin-top: 50px;
+    width: 100%;
+    text-align: right;
+}
+
+.total {
+    font-size: 1.1em;
+}
+
+.items-table {
+    width: 100%;
+    margin-top: 20px;
+    text-align: right;
+}
+
+.items-table th {
+    text-align: right;
+}
+
+.order-item-template {
+    display: none;
+}
+
+.invoice-dates {
+    margin-top: 37px;
+    width: 100%;
+    text-align: right;
+}
+
+.cell-spacing td {
+    padding-right: 10px;
+}
+
+.cell-spacing td:last-child {
+    padding-right: 0;
+}

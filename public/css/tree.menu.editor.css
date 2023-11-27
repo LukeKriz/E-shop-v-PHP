@@ -1,0 +1,41 @@
+/* Editor stromového menu */
+
+.btn-editor {
+    padding: 3px 6px !important;
+}
+
+input.tree-menu-title-editor {
+    color: #23527c;
+    border: 1px solid transparent;
+    background-color: transparent;
+}
+
+.editor-node:hover input.tree-menu-title-editor, input.tree-menu-title-editor:focus {
+    border: 1px solid #23527c;
+}
+
+input.tree-menu-title-editor:focus {
+    background-color: white;
+}
+
+.tree-menu-editor-root {
+    list-style: none;
+}
+
+.tree-menu-editor ul {
+    margin-left: 30px;
+}
+
+.tree-menu-hidden {
+    display: none !important;
+}
+
+@media (max-width: 991px) {
+    .tree-menu-editor-root input {
+        width: 110px;
+    }
+
+    .tree-menu-editor ul {
+        margin-left: 15px;
+    }
+}
