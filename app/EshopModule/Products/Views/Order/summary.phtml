@@ -1,0 +1,102 @@
+<?php if (!$email) : ?>
+	<?= OrderHelper::state(3, $logged) ?>
+<?php else : ?>
+	<html>
+	<head>
+		<meta charset="UTF-8">
+		<style>
+			.table {
+				width: 100%;
+				color: #444444;
+				border-collapse: collapse;
+				border: 1px solid #C9CBCD;
+			}
+
+			.table th, .table td {
+				padding: 5px;
+				border: 1px solid #C9CBCD;
+			}
+
+			.table th {
+				color: black;
+				background: #f5f5f5;
+			}
+		</style>
+	</head>
+	<body>
+	<p><?= $message ?></p>
+<?php endif ?>
+
+	<h2>Košík</h2>
+	<table class="table table-bordered table-striped">
+		<thead>
+		<tr>
+			<th>Produkt</th>
+			<th>Počet</th>
+			<th>Cena</th>
+		</tr>
+		</thead>
+		<tbody>
+		<?php foreach ($products as $product) : ?>
+			<tr>
+				<td><?= $product['title'] ?></td>
+				<td><?= $product['quantity'] ?> ks </td>
+				<td><?= ProductHelper::price($product['price'] * $product['quantity'], $settings['vat_payer'], $settings['vat']) ?></td>
+			</tr>
+		<?php endforeach ?>
+		</tbody>
+		<tfoot>
+		<tr>
+			<th>Celkem</th>
+			<th><?= $summary['products'] ?> ks</th>
+			<th><strong><?= ProductHelper::price($summary['price'], $settings['vat_payer'], $settings['vat']) ?></strong></th>
+		</tr>
+		</tfoot>
+	</table>
+
+	<h2>Zákazník</h2>
+	<h3><?= PersonHelper::name($person) ?></h3>
+
+	<p>
+		<?php if ($person['phone']) : ?>
+			Tel: <?= $person['phone'] ?><br />
+		<?php endif ?>
+
+		<?php if ($person['fax']) : ?>
+			Fax: <?= $person['fax'] ?><br />
+		<?php endif ?>
+
+		<?php if ($person['email']) : ?>
+			Email: <?= $person['email'] ?><br />
+		<?php endif ?>
+
+		<?php if ($person['identification_number']) : ?>
+			IČ: <?= $person['identification_number'] ?><br />
+		<?php endif ?>
+
+		<?php if ($person['tax_number']) : ?>
+			DIČ: <?= $person['tax_number'] ?><br />
+		<?php endif ?>
+	</p>
+
+	<h3>Adresa</h3>
+
+	<p>
+		<?= PersonHelper::address($person) ?>
+	</p>
+
+<?php if ($person['delivery_address_id']) : ?>
+	<h3>Dodací adresa</h3>
+	<p>
+		<?= PersonHelper::address($deliveryAddress) ?>
+	</p>
+<?php endif ?>
+
+<?php if (!$email) : ?>
+	<nav class="button-bar">
+		<a href="objednavka/summary/buy">Objednat</a>
+	</nav>
+<?php else : ?>
+	</body>
+	</html>
+<?php endif ?>

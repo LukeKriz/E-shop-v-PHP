@@ -1,0 +1,51 @@
+<div class="welcomeimg">
+
+<h1><span>Čistá voda</span> od Beskyd po Jeseníky.</h1>
+    <!---<form class="searching" role="search" method="POST">
+        <input name="search-phrase" type="search" value="<?= $_GET['phrase'] ?? '' ?>" placeholder="Hledejte zboží na našem E-shopu.." aria-label="Product title">
+        <button class="hledac" type="submit"><i class="fas fa-search"></i></button>
+    </form>	-->
+
+
+</div>
+<div class="social">
+<a class="soc-but">
+<i id="mobile" class="fa-solid fa-mobile-screen"></i>
+<i id="close-mobile" class="fa-solid fa-xmark"></i>
+</a>
+<a class="fb" href="https://www.facebook.com/cerpadlastudny"><i class="fa-brands fa-square-facebook"></i></a>
+<a class="phone" href="https://wa.me/420725890800"><i class="fa-brands fa-square-whatsapp"></i></a>
+<a class="mail"	href="mailto:pribor@cerpadla-studny.cz"><i class="fa-solid fa-square-envelope"></i></a>
+</div>
+<div class="green_line"></div>
+
+</div>
+
+<div class="container">
+
+
+<div class="welcome_logo">
+
+<img class="logo_grey" src="../../../../../public/images/logo.png" alt="logogreen"> 
+
+
+</div>
+
+<table class="table table-bordered table-striped">
+	<?php foreach ($articles as $article) : ?>
+		<tr>
+			<td>
+				<h2><a href="<?= $article['url'] ?>"><?= $article['title'] ?></a></h2>
+				<?= $article['description'] ?>
+			</td>
+			<?php if ($admin) : ?>
+				<td class="align-middle text-center">
+					<a href="editor/index/<?= $article['url'] ?>"><i class="fa fa-pencil-alt"></i></a>
+					<a href="seznam-clanku/remove/<?= $article['url'] ?>" data-confirm="Opravdu chcete vybraný článek odstranit?">
+						<i class="fa fa-trash-alt"></i>
+					</a>
+				</td>
+			<?php endif ?>
+		</tr>
+	<?php endforeach ?>
+</table>

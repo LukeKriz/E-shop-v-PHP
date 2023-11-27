@@ -1,0 +1,231 @@
+<div class="invoice">
+	<div class="row">
+		<div class="half-box col-12 col-lg-6">
+			<h2>Dodavatel</h2>
+			<p>
+				<strong><?= PersonHelper::name($seller) ?></strong>
+			</p>
+			<p>
+				<?= PersonHelper::address($seller) ?>
+			</p>
+			<table class="cell-spacing">
+				<tr>
+					<td>IČ: </td>
+					<td><?= $seller['identification_number'] ?></td>
+				</tr>
+				<?php if ($seller['tax_number']) : ?>
+					<tr>
+						<td>DIČ: </td>
+						<td><?= $seller['tax_number'] ?></td>
+					</tr>
+				<?php endif ?>
+			</table>
+			<p>
+				<?= $seller['registry_entry'] ?>
+			</p>
+		</div>
+
+		<div class="half-box col-12 col-lg-6">
+			<div id="buyer-detail">
+				<h2>Odběratel</h2>
+				<p>
+					<strong><?= PersonHelper::name($buyer) ?></strong>
+				</p>
+				<p>
+					<?= PersonHelper::address($buyer) ?>
+				</p>
+
+				<?php if ($order['buyer_delivery_address_id'] != $order['buyer_address_id']) : ?>
+					<h2>Dodací adresa</h2>
+					<p>
+						<?= PersonHelper::address($buyerDeliveryAddress) ?>
+					</p>
+				<?php endif ?>
+
+				<p>
+					<?php if ($buyer['identification_number']) : ?>
+						IČ: <?= $buyer['identification_number'] ?><br />
+					<?php endif ?>
+					<?php if ($buyer['tax_number']) : ?>
+						DIČ: <?= $buyer['tax_number'] ?>
+					<?php endif ?>
+				</p>
+			</div>
+
+			<nav class="button-bar">
+				<a id="change-buyer-button" href="#">Změnit</a>
+			</nav>
+		</div>
+	</div>
+
+	<div class="clear"></div>
+
+	<hr class="invoice-hr" />
+
+	<div class="row">
+		<div class="half-box col-12 col-xl-6">
+			<h2>Platební údaje</h2>
+			<table class="cell-spacing">
+				<tr>
+					<td>Bankovní spojení</td>
+					<td><?= $seller['bank_name'] ?></td>
+				</tr>
+				<tr>
+					<td>Číslo účtu</td>
+					<td><strong><?= $seller['account_number'] ?>/<?= $seller['bank_code'] ?></strong></td>
+				</tr>
+				<tr>
+					<td>Variabilní symbol</td>
+					<td><strong><?= $order['number'] ?></strong></td>
+				</tr>
+			</table>
+		</div>
+
+		<div class="half-box col-12 col-xl-6">
+			<?= $form->renderStartForm() ?>
+			<table class="invoice-dates">
+				<tr>
+					<td class="invoice-first-column">Datum vystavení</td>
+					<td><?= $form->renderControls('issued') ?></td>
+				</tr>
+				<tr>
+					<td class="invoice-first-column">Datum zdan. plnění</td>
+					<td><?= FormatHelper::numericDate($order['taxable_supply_date']) ?></td>
+				</tr>
+				<tr>
+					<td class="invoice-first-column"><strong>Datum splatnosti</strong></td>
+					<td><?= $form->renderControls('due_date') ?></td>
+				</tr>
+			</table>
+			<?= $form->renderButtons() ?>
+			<?= $form->renderEndForm() ?>
+		</div>
+	</div>
+
+	<div class="clear"></div>
+
+	<hr class="invoice-hr" />
+
+	<table class="items-table" id="order-items-table" data-order-id="<?= $order['e_order_id'] ?>">
+		<thead>
+			<tr>
+				<th class="text-left">Položka</th>
+				<th class="text-left pl-2">Počet kusů</th>
+				<th>Cena za kus</th>
+				<?php if ($seller['tax_number']) : ?>
+					<th>Celkem bez DPH</th>
+					<th>Sazba DPH</th>
+					<th>Celkem s DPH</th>
+				<?php else : ?>
+					<th>Celkem</th>
+				<?php endif ?>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach ($products as $product) : ?>
+				<tr data-order-item-id="<?= $product['product_id'] ?>">
+					<td class="invoice-first-column title"><?= $product['title'] ?></td>
+					<td class="quantity">
+						<input type="number" value="<?= $product['quantity'] ?>">
+						<button type="button" class="order-item-change">
+							<i class="fa fa-pencil-alt"></i>
+						</button>
+						<button type="button" class="order-item-remove">
+							<i class="fa fa-trash-alt"></i>
+						</button>
+					</td>
+					<td class="price"><?= FormatHelper::currency($product['price']) ?></td>
+					<td class="price_total"><?= FormatHelper::currency($product['price'] * $product['quantity']) ?></td>
+					<?php if ($seller['tax_number']) : ?>
+						<td class="vat"><?= $settings['vat'] ?>%</td>
+						<td class="price_total_vat"><?= ProductHelper::priceWithVat($product['price'] * $product['quantity'], $settings['vat']) ?></td>
+					<?php endif ?>
+				</tr>
+			<?php endforeach ?>
+			<tr data-order-item-id="" class="order-item-template">
+				<td class="invoice-first-column title"></td>
+				<td class="quantity">
+					<input class="order-item-quantity" type="number" value="">
+					<button type="button" class="order-item-change">
+						<i class="fa fa-pencil-alt"></i>
+					</button>
+					<button type="button" class="order-item-remove">
+						<i class="fa fa-trash-alt"></i>
+					</button>
+				</td>
+				<td class="price"></td>
+				<td class="price_total"></td>
+				<?php if ($seller['tax_number']) : ?>
+					<td class="vat"></td>
+					<td class="price_total_vat"></td>
+				<?php endif ?>
+			</tr>
+		</tbody>
+	</table>
+
+	<div class="half-box">&nbsp;</div>
+	<div class="half-box">
+		<table class="total-table" id="order-summary-total">
+			<?php if ($seller['tax_number']) : ?>
+				<tr>
+					<td class="invoice-first-column">Celkem bez DPH</td>
+					<td class="order_total"><?= FormatHelper::currency($summary['price']) ?></td>
+				</tr>
+				<tr>
+					<td class="invoice-first-column">DPH <?= $settings['vat'] ?>%</td>
+					<td class="order_vat">
+						<?= ProductHelper::vatFromPrice($summary['price'], $settings['vat']) ?>
+					</td>
+				</tr>
+				<?php $total = ProductHelper::priceWithVat($summary['price'], $settings['vat'], true) ?>
+			<?php else: ?>
+				<?php $total = FormatHelper::currency(round($summary['price'])) ?>
+			<?php endif ?>
+			<tr>
+				<td class="invoice-first-column"><strong>Celkem k úhradě</strong></td>
+				<td class="total"><strong class="order_total_vat"><?= $total ?></strong></td>
+			</tr>
+		</table>
+	</div>
+
+	<div class="clear"></div>
+
+	<?= $addProductForm->render() ?>
+
+	<div class="half-box">
+		<h2>Vyřizuje</h2>
+		<table class="cell-spacing">
+			<tr>
+				<td colspan="2"><?= PersonHelper::name($accountant) ?></td>
+			</tr>
+			<tr>
+				<td>Tel.</td>
+				<td><?= $accountant['phone'] ?></td>
+			</tr>
+			<tr>
+				<td>Email</td>
+				<td><?= $accountant['email'] ?></td>
+			</tr>
+		</table>
+	</div>
+
+	<div class="half-box text-right">
+		<img src="images/signatures/<?= $settings['settings_id'] ?>.png" style="width: 200px; margin-top: 35px;" alt="Podpis" />
+	</div>
+
+	<div class="clear"></div>
+</div>
+
+<div id="buyer-form">
+	<iframe id="buyer-form-frame" class="w-100 border-0 pb-1" src="api/EshopModule-Products-OrderManagement/edit-person/<?= $order['e_order_id'] ?>"></iframe>
+	<nav class="button-bar">
+		<a href="" id="buyer-form-submit">Uložit</a>
+	</nav>
+</div>
+
+<p class="center small text-muted text-center mt-4 mb-2">
+	Editor se nemusí korektně zobrazovat na menších zařízení. Pro úpravu faktury doporučujeme používat stolní počítač nebo laptop.
+</p>
+
+<link rel="stylesheet" href="css/invoice.css" />
+<script src="js/order.cart.editor.js"></script>

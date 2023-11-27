@@ -1,0 +1,253 @@
+<?php
+
+use App\EshopModule\Products\Models\OrderManager;
+
+?>
+
+<!DOCTYPE html>
+<html lang="cs-cz">
+
+<head>
+	<base href="<?= $domain ?>" />
+	<meta charset="UTF-8" />
+	<title><?= $title ?></title>
+	<meta name="description" content="<?= $description ?>" />
+
+
+
+
+	<link rel="apple-touch-icon" sizes="180x180" href="../../../../../public/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../../../../../public/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../../../../../public/favicon-16x16.png">
+
+
+
+
+	<link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="css/slick-theme.css">
+	<link rel="stylesheet" href="css/slick.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" integrity="sha512-ZKX+BvQihRJPA8CROKBhDNvoc2aDMOdAlcm7TUQY+35XYtrd3yh95QOOhsPDQY9QnKE0Wqag9y38OIgEvb88cA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="css/tree.menu.css" type="text/css" />
+	<link rel="stylesheet" href="css/tree.menu.editor.css" type="text/css" />
+	<link rel="stylesheet" href="css/forms.css" type="text/css" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Solitreo&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+	<!-- Bootstrap Core CSS -->
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link href="css/fontawesome.min.css" rel="stylesheet">
+	<script src="https://kit.fontawesome.com/0ac4af757c.js" crossorigin="anonymous"></script>
+
+	<link rel="stylesheet" href="public/css/style.css" type="text/css" />
+	<!-- jQuery -->
+	<script src="js/jquery.js"></script>
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/smoothness/jquery-ui.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="public/js/bootstrap.min.js"></script>
+
+	<!-- Oprava konfliktu mezi jQuery UI a Bootstrap -->
+	<script>
+		$.fn.bootstrapBtn = $.fn.button.noConflict();
+	</script>
+
+	<script src="js/confirm.js"></script>
+	<script type="text/javascript" src="js/tree.menu.js"></script>
+</head>
+
+<body>
+	<header>
+		<div class="navigation_main">
+			<a class="logo" href="uvod">
+				<img src="../../../../../public/images/logo.png" alt="logo">
+				<h1>čerpadla<span>-</span>studny</h1>
+				<h2>Příbor<span>-</span>Opava<span>-</span>Ostrava</h2>
+			</a>
+			<nav class="navigation">
+				<div class="nav1">
+
+
+
+					<a class="toggle-button">
+						<span class="bar"></span>
+						<span class="bar"></span>
+						<span class="bar"></span>
+					</a>
+
+					<ul class="menu">
+						<li id="onas">
+
+							<a class="onich" href="uvod" id="uvod">O nás</a>
+							<a id="about_main"><i class="fas fa-sort-down fa-2x"></i></a>
+							<div class="nas">
+								<a href="uvod" id="about">Úvod</a>
+								<a href="kontakt" id="about">Kontakty</a>
+							</div>
+
+
+
+
+						</li>
+
+
+
+						<li id="servis">
+							<a class="codelame" href="codelame">Co děláme</a>
+							<a id="servis_main"><i class="fas fa-sort-down fa-2x"></i></a>
+
+							<div class="ser">
+								<i class="sipka"></i>
+								<a href="
+								montaze" id="montaz">Montáže</a>
+								<a href="servis" id="montaz">Servis&nbsp/&nbspOpravy</a>
+								<a href="cisteni-vrtu" id="montaz">Čištění&nbspvrtaných&nbspstudní</a>
+								<a href="cisteni-studni" id="montaz">Čistění&nbspkopaných&nbspstudní</a>
+								<a href="uprava-vody" id="montaz">Úpravna&nbspvody</a>
+								<a href="https://zavlazimeto.cz/" id="montaz">zavlažování</a>
+
+
+							</div>
+
+
+						</li>
+
+
+						<li id="programy">
+							<a class="dotacniprogramy" href="programy">Dotace</a>
+							<a id="programy_main"><i class="fas fa-sort-down fa-2x"></i></a>
+
+							<div class="prog">
+								<div class=""><i class="sipka"></i></div>
+								<div style="display:flex; flex-direction:column;">
+									<a href="destovka" id="program">Dešťovka</a>
+
+									<a href="destovka-a-cov" id="program">Dešťovka&nbsp+&nbspČOV</a>
+								</div>
+
+							</div>
+
+
+						</li>
+
+
+
+						<li><a href="comming-soon">E-shop</a></li>
+
+
+					</ul>
+
+				</div>
+				<div class="nav2">
+
+
+
+					<a class="login" href="prihlaseni"><i class="fas fa-user-alt"></i></a>
+					<!--<a href="objednavka" class="scart">
+					<i class="fa fa-shopping-cart"></i>
+					<p>(<?= ProductHelper::price($cart['price'], $settings['vat_payer'], $settings['vat']) ?>)</p>
+				</a>-->
+				</div>
+
+			</nav>
+
+			<div class="lista"></div>
+			<div class="lista2"></div>
+			<div class="lista3"></div>
+		</div>
+	</header>
+	<?php foreach ($messages as $message) : ?>
+		<div class="alert alert-<?= $message['type'] ?>" role="alert"><?= $message['content'] ?></div>
+	<?php endforeach ?>
+
+
+
+	<article class="obsah" id="telo">
+		<?php $this->controller->renderView(); ?>
+	</article>
+
+
+	</div>
+
+	<div class="green_line"></div>
+
+	<footer>
+
+		<div class="fut">
+			<h3>Moravskoslezský kraj</h3>
+			<ul>
+				<div class="prvnirada">
+					<li>Příbor</li>
+					<li>Kopřivnice</li>
+					<li>Štramberk</li>
+					<li>Nový Jičín</li>
+					<li>Kunín</li>
+					<li>Studénka</li>
+					<li>Ostrava</li>
+					<li>Frýdek-Místek</li>
+					<li>Frýdlant nad Ostravicí</li>
+					<li>Čeladná</li>
+					<li>Ostravice</li>
+					<li>Frenštát pod Radhoštěm</li>
+					<li>Horní Bečva</li>
+					<li>Beskydy</li>
+				</div>
+
+				<div class="">
+					<li>Opava</li>
+					<li>Pustá Polom</li>
+					<li>Hlučín</li>
+					<li>Hradec nad Moravicí</li>
+					<li>Kravaře</li>
+					<li>Dolní Benešov</li>
+					<li>Krnov</li>
+					<li>Vítkov</li>
+					<li>Fulnek</li>
+					<li>Odry</li>
+					<li>Bruntál</li>
+				</div>
+			</ul>
+		</div>
+
+
+		<div class="fut1">
+
+			<img class="map" src="/public/images/map.png" alt="map">
+
+		</div>
+
+
+		<div class="fut2">
+			<h3>Prodejna čerpadel Příbor</h3>
+			<a href="mailto:pribor@cerpadla-studny.cz">Email: pribor@cerpadla-studny.cz</a>
+			<a href="tel:+420725513733">Telefon: +420 725513733</a>
+			<p>Karla Čapka 58, 742 58 Příbor</p>
+			<br><br>
+			<h3>Prodejna čerpadel Opava</h3>
+			<a href="mailto:opava@cerpadla-studny.cz">Email: opava@cerpadla-studny.cz</a>
+			<a href="tel:+420725890800">Telefon: +420 725890800</a>
+			<p>K Zátiší 323, 747 69 Pustá Polom</p>
+
+
+
+
+
+			<div class="banner"></div>
+		</div>
+
+
+	</footer>
+	<script src="../../../../../public/js/contact.js"></script>
+	<script src="../../../../../public/js/razeni.js"></script>
+	<script src="../../../../../public/js/hamburger.js"></script>
+	<script src="../../../../../public/js/menu.js"></script>
+	<script src="../../../../../public/js/welcomeimg.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" integrity="sha512-XtmMtDEcNz2j7ekrtHvOVR4iwwaD6o/FUJe6+Zq+HgcCsk3kj4uSQQR8weQ2QVj1o0Pk6PwYLohm206ZzNfubg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="../../../../../public/js/galery.js"></script>
+	<script src="../../../../../public/js/lightbox.js"></script>
+</body>
+
+</html>

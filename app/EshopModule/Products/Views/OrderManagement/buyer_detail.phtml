@@ -1,0 +1,23 @@
+<h2>Odběratel</h2>
+<p>
+	<strong><?= PersonHelper::name($buyer) ?></strong>
+</p>
+<p>
+	<?= PersonHelper::address($buyer) ?>
+</p>
+
+<?php if ($order['buyer_delivery_address_id'] != $order['buyer_address_id']) : ?>
+	<h2>Dodací adresa</h2>
+	<p>
+		<?= PersonHelper::address($buyerDeliveryAddress) ?>
+	</p>
+<?php endif ?>
+
+<p>
+	<?php if ($buyer['identification_number']) : ?>
+		IČ: <?= $buyer['identification_number'] ?><br />
+	<?php endif ?>
+	<?php if ($buyer['tax_number']) : ?>
+		DIČ: <?= $buyer['tax_number'] ?>
+	<?php endif ?>
+</p>

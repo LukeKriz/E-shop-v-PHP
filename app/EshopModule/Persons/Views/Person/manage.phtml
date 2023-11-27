@@ -1,0 +1,85 @@
+<div class="welcomeimg">
+
+<h1><span>Čistá voda</span> od Beskyd po Jeseníky.</h1>
+    <!---<form class="searching" role="search" method="POST">
+        <input name="search-phrase" type="search" value="<?= $_GET['phrase'] ?? '' ?>" placeholder="Hledejte zboží na našem E-shopu.." aria-label="Product title">
+        <button class="hledac" type="submit"><i class="fas fa-search"></i></button>
+    </form>	-->
+
+
+</div>
+<div class="social">
+<a class="soc-but">
+<i id="mobile" class="fa-solid fa-mobile-screen"></i>
+<i id="close-mobile" class="fa-solid fa-xmark"></i>
+</a>
+<a class="fb" href="https://www.facebook.com/cerpadlastudny"><i class="fa-brands fa-square-facebook"></i></a>
+<a class="phone" href="https://wa.me/420725890800"><i class="fa-brands fa-square-whatsapp"></i></a>
+<a class="mail"	href="mailto:pribor@cerpadla-studny.cz"><i class="fa-solid fa-square-envelope"></i></a>
+</div>
+<div class="green_line"></div>
+
+</div>
+
+<div class="container">
+
+
+<div class="welcome_logo">
+
+<img class="logo_grey" src="../../../../../public/images/logo.png" alt="logogreen"> 
+
+
+</div>
+
+<?php if ($displayState) : ?>
+	<?= OrderHelper::state(1, false) ?>
+	<p><a href="prihlaseni" class="back">Přihlaste se</a> do svého zákaznického účtu nebo pokračujte v jednorázovém nákupu. Zákaznický účet je možné zároveň založit v jednom kroku.</p>
+<?php endif ?>
+
+<?= $form->renderStartForm() ?>
+
+<?php if ($createAccount) : ?>
+	<?php if (!$forceAccount) : ?>
+		<?= $form->renderControls('create_account') ?>
+		<div id="create-account-controls">
+	<?php endif ?>
+	<h2>Zákaznický účet</h2>
+	<?= $form->renderControls('password', 'password_repeat') ?>
+	<?php if (!$forceAccount) : ?>
+		</div>
+	<?php endif ?>
+<?php endif ?>
+
+<h2>Osoba</h2>
+
+<?= $form->renderControls('email') ?>
+
+<?= $form->renderControls('first_name', 'last_name', 'company_name', 'identification_number', 'tax_number') ?>
+
+<h2>Kontaktní údaje</h2>
+
+<?= $form->renderControls('phone', 'fax', 'email'); ?>
+
+<h2>Adresa</h2>
+
+<?= $form->renderControls('street', 'registry_number', 'house_number', 'city', 'zip', 'country_id', 'omit_delivery_address'); ?>
+
+<div id="delivery-address-controls">
+	<h2>Doručovací adresa</h2>
+	<?= $form->renderControls('delivery_street', 'delivery_registry_number', 'delivery_house_number', 'delivery_city', 'delivery_zip', 'delivery_country_id'); ?>
+</div>
+
+<?php if ($admin) : ?>
+	<h2>Platební údaje</h2>
+
+	<?= $form->renderControls('bank_code', 'account_number', 'registry_entry'); ?>
+<?php endif ?>
+
+<?php if ($antispam) : ?>
+	<?= $form->renderControls('y'); ?>
+<?php endif ?>
+
+<?= $form->renderButtons(); ?>
+<?= $form->renderEndForm(); ?>
+
+<script type="text/javascript" src="js/register.js"></script>

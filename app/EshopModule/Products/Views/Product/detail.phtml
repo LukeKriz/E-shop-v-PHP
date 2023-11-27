@@ -1,0 +1,199 @@
+
+<div class="welcomeimg4">
+	<h4>E-shop</h4>
+	<div class="search-main">
+		<a class="icon-search">
+			<i id="lupa" class="fas fa-search"></i>
+			<i id="lupa-close" class="fa-solid fa-xmark"></i>
+		</a>
+   		<form class="searching" role="search" method="POST">
+        	<input name="search-phrase" type="search" value="<?= $_GET['phrase'] ?? '' ?>" placeholder="Hledejte zboží na našem E-shopu.." aria-label="Product title">
+        	<button class="hledac" type="submit"><i class="fas fa-search"></i></button>
+    	</form>	
+	</div>
+
+</div>
+<div class="social">
+<a class="soc-but">
+<i id="mobile" class="fa-solid fa-mobile-screen"></i>
+<i id="close-mobile" class="fa-solid fa-xmark"></i>
+</a>
+<a class="fb" href="https://www.facebook.com/cerpadlastudny"><i class="fa-brands fa-square-facebook"></i></a>
+<a class="phone" href="https://wa.me/420725890800"><i class="fa-brands fa-square-whatsapp"></i></a>
+<a class="mail"	href="mailto:pribor@cerpadla-studny.cz"><i class="fa-solid fa-square-envelope"></i></a>
+</div>
+<div class="green_line"></div>
+
+</div>
+
+<div class="container">
+
+
+<div class="welcome_logo">
+
+<img class="logo_grey" src="../../../../../public/images/logo.png" alt="logogreen"> 
+
+</div>
+
+<script src="../../../../../public/js/searching.js"></script>
+
+
+
+<div class="container">
+	<div id="product-card">
+	<div class="carousel-holder mt-5">
+
+		<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+			<ol class="carousel-indicators">
+				<?php for ($i = 0; $i < $product['images_count']; $i++) : ?>
+					<li data-target="#carousel-example-generic" data-slide-to="<?= $i ?>"
+						<?php if (!$i) : ?>class="active"<?php endif ?>></li>
+				<?php endfor ?>
+			</ol>
+			<div class="carousel-inner text-center">
+				<?php for ($i = 0; $i < $product['images_count']; $i++) : ?>
+					<div class="carousel-item <?php if (!$i) : ?>active<?php endif ?>">
+						<img class="slide-image mw-100" src="images/products/<?= $product['product_id'] ?>_<?= $i ?>.jpg"
+							 alt="<?= $product['title'] ?>">
+					</div>
+				<?php endfor ?>
+				<?php if (!$product['images_count']) : ?>
+					<div class="carousel-item active">
+						<img class="slide-image mw-100" src="images/products/no_preview.png" alt="Náhledy se připravují">
+					</div>
+				<?php endif ?>
+			</div>
+			<a class="carousel-control-prev" href="#carousel-example-generic" role="button" data-slide="prev">
+				<i id="sipkal" style="color:black" class="fas fa-arrow-left fa-2x"></i>
+			</a>
+			<a class="carousel-control-next" href="#carousel-example-generic" role="button" data-slide="next">
+				<i id="sipkar" class="fas fa-arrow-right fa-2x"></i>
+			</a>
+		</div>
+	</div>
+	<div class="odrazec"></div>
+	<div class="px-3 pt-3">
+		<div class="h4 mb-3">
+			<span class="text-dark"><?= $product['title'] ?></span>
+			<?php if ($admin) : ?>
+				<a href="produkty/manage/<?= $product['url'] ?>" class="ml-2"><i class="fa fa-pencil-alt"></i></a>
+				<a href="produkty/delete/<?= $product['product_id'] ?>" data-confirm="Opravdu si přejete odstranit vybraný produkt?">
+					<i class="fa fa-trash-alt"></i>
+				</a>
+			<?php endif ?>
+		</div>
+		
+		<div class="h4 row justify-content-between mx-0 mb-2">
+			<div>
+				<?php if ($product['old_price'] > 0 && $product['price'] < $product['old_price']) : ?>
+					<small class="text-danger ml-2 mr-2"><s><?= ProductHelper::price($product['old_price'], $settings['vat_payer'], $settings['vat']) ?></s></small>
+					<span class="badge badge-warning"><?= ProductHelper::sale($product['old_price'], $product['price']) ?></span>
+					<?php endif ?>
+			</div>
+			<div>
+				<?= ProductHelper::price($product['price'], $settings['vat_payer'], $settings['vat']) ?>
+			</div>
+		</div>
+		<div class="row justify-content-between mx-0 text-muted mb-5">
+			<div>
+				Kód produktu: <?= $product['code'] ?>
+			</div>
+			<?php if ($settings['vat_payer']) : ?>
+				<div>
+					<?= FormatHelper::currency($product['price']) ?> bez DPH
+				</div>
+			<?php endif ?>
+		</div>
+		<?= $_product['description'] ?>
+	</div>
+
+	<div class="row justify-content-between mx-0 mb-4 px-3">
+		<p>
+			<?= ProductHelper::rating($product['rating_sum'], $product['ratings']) ?>
+			<?= $product['ratings'] ?>&nbsp;hodnocení
+		</p>
+		<div class="h5">
+			<?php if ($product['stock']) : ?>
+				<span class="badge badge-success large-icon py-2 px-3">Skladem <?= $product['stock'] ?> kusů</span>
+			<?php else : ?>
+				<span class="badge badge-danger large-icon py-2 px-3">Vyprodáno</span>
+			<?php endif ?>
+		</div>
+	</div>
+	
+	<div class="row flex-column align-items-center mx-0 mb-3">
+		<div>
+			<form class="form-inline add-to-cart-form" method="post">
+				<div class="form-group mb-0">
+					<input type="hidden" name="product_id" value="<?= $product['product_id'] ?>"/>
+					<input type="text" class="form-control input-quantity d-inline-block text-center mr-1" name="quantity" value="1" /> ks
+				</div>
+				<div class="form-group ml-1 mb-0">
+					<button type="submit" name="add_to_cart" class="btn btn-primary">
+						<i class="fa fa-shopping-cart"></i> Do košíku
+					</button>
+				</div>
+			</form>
+		</div>
+		<?php if ($admin) : ?>
+			<div class="mt-1">
+				<form class="form-inline add-to-stock-form" method="post">
+					<div class="form-group mb-0">
+						<input type="hidden" name="product_id" value="<?= $product['product_id'] ?>"/>
+						<input type="text" class="form-control input-quantity d-inline-block text-center mr-1" name="quantity" value="1" /> ks
+					</div>
+					<div class="form-group ml-1 mb-0">
+						<button type="submit" name="add_to_stock" class="btn btn-outline-dark">
+							<i class="fa fa-sign-in-alt"></i> Naskladnit
+						</button>
+					</div>
+				</form>
+			</div>
+		<?php endif ?>
+	</div>
+</div>
+
+<div class="mt-3 mb-3 p-3">
+	<?php if ($logged) : ?>
+		<div class="pr-5 p-2 pb-5 text-right">
+			<button type="button" class="btn btn-outline-dark text-uppercase font-weight-bold" id="write-review">Napsat recenzi</button>
+		</div>
+
+		<?= $form->renderStartForm() ?>
+		<p class="text-center">
+			<?php for ($i = 0; $i < 5; $i++) : ?>
+				<i class="far fa-star large-icon review-star"></i>
+			<?php endfor ?>
+		</p>
+		<?= $form->renderControls('rating', 'content', 'product_id') ?>
+		
+		<?= $form->renderButtons() ?>
+		<?= $form->renderEndForm() ?>
+	<?php endif ?>
+
+	<hr />
+
+	<?php foreach ($reviews as $review) : ?>
+		<div class="row justify-content-between mx-0 mb-1">
+			<div>
+				<span id="jmeno"><?= $review['name'] ?></span><br>
+				<?= ProductHelper::rating($review['rating']) ?>
+				<br>
+			</div>
+			<div><?= FormatHelper::prettyDateTime($review['sent']) ?></div>
+			
+		</div>
+		<p id="recenze"><?= $review['content'] ?></p><br>
+
+		<hr />
+	<?php endforeach ?>
+</div>
+</div>
+<script src="js/review.form.js"></script>
+<script>
+	$(() => {
+		$('.carousel').carousel({
+			interval: false,
+		});
+	});
+</script>

@@ -1,0 +1,169 @@
+
+<div class="welcomeimg4">
+	<h4>E-shop</h4>
+	<div class="search-main">
+		<a class="icon-search">
+			<i id="lupa" class="fas fa-search"></i>
+			<i id="lupa-close" class="fa-solid fa-xmark"></i>
+		</a>
+   		<form class="searching" role="search" method="POST">
+        	<input name="search-phrase" type="search" value="<?= $_GET['phrase'] ?? '' ?>" placeholder="Hledejte zboží na našem E-shopu.." aria-label="Product title">
+        	<button class="hledac" type="submit"><i class="fas fa-search"></i></button>
+    	</form>	
+	</div>
+
+</div>
+<div class="social">
+<a class="soc-but">
+<i id="mobile" class="fa-solid fa-mobile-screen"></i>
+<i id="close-mobile" class="fa-solid fa-xmark"></i>
+</a>
+<a class="fb" href="https://www.facebook.com/cerpadlastudny"><i class="fa-brands fa-square-facebook"></i></a>
+<a class="phone" href="https://wa.me/420725890800"><i class="fa-brands fa-square-whatsapp"></i></a>
+<a class="mail"	href="mailto:pribor@cerpadla-studny.cz"><i class="fa-solid fa-square-envelope"></i></a>
+</div>
+<div class="green_line"></div>
+
+</div>
+
+
+<div class="kategorie">
+			<div class="texty">
+					<div class="lista">
+						<nav class="menu-tree text-light">
+							
+						<?=MenuHelper::renderCategories($categories) ?>
+						</nav>
+					</div>
+
+			</div>		
+</div>
+<div class="container">
+
+
+
+
+<script src="../../../../../public/js/searching.js"></script>
+
+
+<div class="razeni">
+	<div style="display: flex;">
+	<a class="filtrovat">
+		<span class="filtr">Filtrovat</span>
+		<span class="filtr_close"><i class="fas fa-times"></i></span>
+	</a>
+
+	</div>
+	<div>
+	<?= $form->render() ?>
+	</div>
+</div>
+
+
+
+		
+
+<div class="row">
+
+
+
+	<?php foreach ($products as $product): ?>
+		
+			
+		<div class="col-lg-4 col-md-6 mb-3 mt-5">
+			<div class="d-flex flex-column h-100">
+				
+				<a class="product" href="produkty/detail/<?= $product['url'] ?>">
+					<?php if ($product['images_count']) : ?>
+						<img src="images/products/<?= $product['product_id'] ?>_thumb.png" class="w-100 product-image" alt="<?= $product['title'] ?>" />
+					<?php else : ?>
+						<img src="images/products/no_preview.png" class="w-100 product-image" alt="<?= $product['title'] ?>" />
+					<?php endif ?>
+				</a>
+
+				<div class="d-flex flex-column flex-grow-1 px-2 mx-1 py-2">
+					<h4 style="text-align:center; margin-bottom:3rem;">
+						<a class="name_of_product" href="produkty/detail/<?= $product['url'] ?>"><?= $product['title'] ?></a>
+						<?php if ($admin) : ?>
+							<small class="for_admin_only">
+								<a href="produkty/manage/<?= $product['url'] ?>"><i style="color: #00913c;" class="fa fa-pencil-alt"></i></a>
+								<a href="produkty/delete/<?= $product['product_id'] ?>" data-confirm="Opravdu si přejete odstranit vybraný produkt?">
+									<i style="color: #00913c;"  class="fa fa-trash-alt"></i>
+								</a>
+							</small>
+						<?php endif ?>
+					</h4>
+					<div class="d-flex flex-column justify-content-between flex-grow-1">
+						<p class="short_des"><?= $product['short_description'] ?></p>
+						<div>
+							<div class="h5 row justify-content-between align-items-center mx-0 mb-2">
+								<div style="font-size:1rem;font-family: 'Quicksand', sans-serif;" class="small">
+									<?php if ($product['old_price'] > 0 && $product['price'] < $product['old_price']) : ?>
+										<span style="font-family: 'Quicksand', sans-serif;" class="badge badge-warning"><?= ProductHelper::sale($product['old_price'], $product['price']) ?></span>
+										<small class="text-danger"><s><?= ProductHelper::price($product['old_price'], $settings['vat_payer'], $settings['vat']) ?></s></small>
+									<?php endif ?>
+								</div>
+								
+								<div class="cena">
+									
+									<?= ProductHelper::price($product['price'], $settings['vat_payer'], $settings['vat']) ?>
+								</div>
+							</div>
+							<div id="rank_price" class="row justify-content-between align-items-center mx-0 mb-2">
+								<div id="rating" class="small">
+									<?= ProductHelper::rating($product['rating_sum'], $product['ratings']) ?><br />
+									<?= $product['ratings'] ?>&nbsp;hodnocení
+								</div>
+								<?php if ($product['stock']) : ?>
+									<div>
+										<span class="storage_space">
+											Skladem
+											<?php if ($admin) : ?>
+												<?= $product['stock'] ?> ks
+											<?php endif ?>
+										</span>
+									</div>
+								<?php endif ?>
+							</div>
+
+							<div class="row flex-column align-items-center small mx-0 mb-1">
+								<div>
+									<form class="form-inline add-to-cart-form" method="post">
+										<div class="form-group input-group-sm mb-0">
+											<input type="hidden" name="product_id" value="<?= $product['product_id'] ?>"/>
+											<input type="text" class="inputy" name="quantity" value="1" /><span id="ks">ks<span>
+										</div>
+										<div class="form-group ml-1 mb-0">
+											<button type="submit" name="add_to_cart" class="to_cart">
+												<i class="fa fa-shopping-cart"></i> Do košíku
+											</button>
+										</div>
+									</form>
+								</div>
+								<?php if ($admin) : ?>
+									<div class="mt-1">
+										<form class="form-inline add-to-stock-form" method="post">
+											<div class="form-group input-group-sm mb-0">
+												<input type="hidden" name="product_id" value="<?= $product['product_id'] ?>"/>
+												<input type="text" class="inputy" name="quantity" value="1" /><span id="ks">ks<span>
+											</div>
+											<div class="form-group ml-1 mb-0">
+												<button type="submit" name="add_to_stock" class="to_storage">
+													<i class="fa fa-sign-in-alt"></i> Naskladnit
+												</button>
+											</div>
+										</form>
+									</div>
+								<?php endif ?>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<?php endforeach ?>
+</div>
+
+<div class="container">
+	<?= PaginationHelper::pagination($page, $pages, $_paginationUrl) ?>
+</div>

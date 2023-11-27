@@ -1,0 +1,32 @@
+<?= OrderHelper::state(0, $logged) ?>
+<div class="container">
+<?= $form->renderStartForm() ?>
+
+
+
+
+
+<?php foreach ($products as $product) : ?>
+			
+			<b>Produkt:</b><p><?= $product['title'] ?></p><br><br>
+			<b>Počet:</b><p><?= $form->renderControl('quantity_' . $product['product_id']) ?>
+					<button type="button" class="btn btn-light btn-sm border-dark remove-button">
+						<i class="fa fa-trash-alt"></i> Odebrat
+					</button></p><br><br>
+			<b>Cena:</b><p><?= ProductHelper::price($product['price'] * $product['quantity'], $settings['vat_payer'], $settings['vat']) ?></p><br><br>
+			<span style="width:100%; height:2px; background:red"></span><hr><br><hr><br>
+	
+			
+		<?php endforeach ?>
+
+			<p><b>Celkem kusů: </b><?= $summary['products'] ?> ks</p><br><br>
+			
+			<p>Celková cena: <b>
+					<?= ProductHelper::price($summary['price'], $settings['vat_payer'], $settings['vat']) ?>
+				</b>
+				</p>
+</div>
+<?= $form->renderButtons() ?>
+<?= $form->renderEndForm() ?>
+
+<script type="text/javascript" src="js/cart.js"></script>

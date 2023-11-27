@@ -1,0 +1,182 @@
+<!-- Tato šablona je upravena pomocí voodoo magie tak, aby ji správně načetlo mPDF. Neměnit. -->
+
+<div class="invoice">
+	<div class="half-box">
+		<h1>Faktura - daňový doklad</h1>
+	</div>
+
+	<div class="half-box">
+		<h1 class="text-right">č. <?= $order['number'] ?></h1>
+	</div>
+
+	<div class="clear"></div>
+
+	<hr class="invoice-hr" />
+
+	<div class="half-box">
+		<h2>Dodavatel</h2>
+		<p>
+			<strong><?= PersonHelper::name($seller) ?></strong>
+		</p>
+		<p>
+			<?= PersonHelper::address($seller) ?>
+		</p>
+		<table class="cell-spacing">
+			<tr>
+				<td>IČ: </td>
+				<td><?= $seller['identification_number'] ?></td>
+			</tr>
+			<?php if ($seller['tax_number']) : ?>
+				<tr>
+					<td>DIČ: </td>
+					<td><?= $seller['tax_number'] ?></td>
+				</tr>
+			<?php endif ?>
+		</table>
+		<p>
+			<?= $seller['registry_entry'] ?>
+		</p>
+	</div>
+
+	<div class="half-box">
+		<h2>Odběratel</h2>
+		<p>
+			<strong><?= PersonHelper::name($buyer) ?></strong>
+		</p>
+		<p>
+			<?= PersonHelper::address($buyer) ?>
+		</p>
+		<p>
+			<?php if ($buyer['identification_number']) : ?>
+				IČ: <?= $buyer['identification_number'] ?><br />
+			<?php endif ?>
+			<?php if ($buyer['tax_number']) : ?>
+				DIČ: <?= $buyer['tax_number'] ?>
+			<?php endif ?>
+		</p>
+
+	</div>
+
+	<div class="clear"></div>
+
+	<hr class="invoice-hr" />
+
+	<div class="half-box">
+		<h2>Platební údaje</h2>
+		<table class="cell-spacing">
+			<tr>
+				<td>Bankovní spojení</td>
+				<td><?= $seller['bank_name'] ?></td>
+			</tr>
+			<tr>
+				<td>Číslo účtu</td>
+				<td><strong><?= $seller['account_number'] ?>/<?= $seller['bank_code'] ?></strong></td>
+			</tr>
+			<tr>
+				<td>Variabilní symbol</td>
+				<td><strong><?= $order['number'] ?></strong></td>
+			</tr>
+		</table>
+	</div>
+
+	<div class="half-box">
+		<table class="invoice-dates">
+			<tr>
+				<td class="invoice-first-column">Datum vystavení</td>
+				<td><?= FormatHelper::numericDate($order['issued']) ?></td>
+			</tr>
+			<tr>
+				<td class="invoice-first-column">Datum zdan. plnění</td>
+				<td><?= FormatHelper::numericDate($order['taxable_supply_date']) ?></td>
+			</tr>
+			<tr>
+				<td class="invoice-first-column"><strong>Datum splatnosti</strong></td>
+				<td><strong><?= FormatHelper::numericDate($order['due_date']) ?></strong></td>
+			</tr>
+		</table>
+	</div>
+
+	<div class="clear"></div>
+
+	<hr class="invoice-hr" />
+
+	<table class="items-table">
+		<tr>
+			<th style="text-align: left;">Položka</th>
+			<th>Počet kusů</th>
+			<th>Cena za kus</th>
+			<?php if ($seller['tax_number']) : ?>
+				<th>Celkem bez DPH</th>
+				<th>Sazba DPH</th>
+				<th>Celkem s DPH</th>
+			<?php else : ?>
+				<th>Celkem</th>
+			<?php endif ?>
+		</tr>
+
+		<?php foreach ($products as $product) : ?>
+			<tr>
+				<td class="invoice-first-column"><?= $product['title'] ?></td>
+				<td><?= $product['quantity'] ?></td>
+				<td><?= FormatHelper::currency($product['price']) ?></td>
+				<td><?= FormatHelper::currency($product['price'] * $product['quantity']) ?></td>
+				<?php if ($seller['tax_number']) : ?>
+					<td><?= $settings['vat'] ?>%</td>
+					<td><?= ProductHelper::priceWithVat($product['price'] * $product['quantity'], $settings['vat']) ?></td>
+				<?php endif ?>
+			</tr>
+		<?php endforeach ?>
+	</table>
+
+	<div class="half-box">&nbsp;</div>
+	<div class="half-box">
+		<table class="total-table">
+			<?php if ($seller['tax_number']) : ?>
+				<tr>
+					<td class="invoice-first-column">Celkem bez DPH</td>
+					<td><?= FormatHelper::currency($summary['price']) ?></td>
+				</tr>
+				<tr>
+					<td class="invoice-first-column">DPH <?= $settings['vat'] ?>%</td>
+					<td>
+						<?= ProductHelper::vatFromPrice($summary['price'], $settings['vat']) ?>
+					</td>
+				</tr>
+				<?php $total = ProductHelper::priceWithVat($summary['price'], $settings['vat'], true) ?>
+			<?php else: ?>
+				<?php $total = FormatHelper::currency(round($summary['price'])) ?>
+			<?php endif ?>
+			<tr>
+				<td class="invoice-first-column"><strong>Celkem k úhradě</strong></td>
+				<td class="total"><strong><?= $total ?></strong></td>
+			</tr>
+		</table>
+	</div>
+
+	<div class="clear"></div>
+
+	<div class="half-box">
+		<h2>Vyřizuje</h2>
+		<table class="cell-spacing">
+			<tr>
+				<td colspan="2"><?= PersonHelper::name($accountant) ?></td>
+			</tr>
+			<tr>
+				<td>Tel.</td>
+				<td><?= $accountant['phone'] ?></td>
+			</tr>
+			<tr>
+				<td>Email</td>
+				<td><?= $accountant['email'] ?></td>
+			</tr>
+		</table>
+	</div>
+
+	<div  class="half-box text-right">
+		<img src="images/signatures/<?= $settings['settings_id'] ?>.png" style="width: 200px; margin-top: 35px;" alt="Podpis" />
+	</div>
+
+	<div class="clear"></div>
+
+	
+</div>
