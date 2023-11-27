@@ -1,0 +1,23 @@
+{
+    "name": "eshop",
+    "description": "Kompletní e-shop v PHP",
+    "type": "project",
+    "license": "",
+    "authors": [
+        {
+            "name": "LukeKriz",
+            "email": "mail@lukekriz.cz"
+        }
+    ],
+    "require": {
+        "mpdf/mpdf": "^8.0",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-pdo": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mpdf\\": "vendor/mpdf/mpdf/src"
+        }
+    }
+}
