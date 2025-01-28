@@ -11,7 +11,7 @@ class Settings
 	/**
 	 * @var string Doména projektu
 	 */
-	public static $domain = 'md99.wedos.net';
+	public static $domain = '';
 	/**
 	 * @var array Přístupové údaje k databázi
 	 */
