@@ -16,14 +16,14 @@ class Settings
 	 * @var array Přístupové údaje k databázi
 	 */
 	public static $db = array(
-		'user' => "a265130_lp2wbu",
-		'host' => "md99.wedos.net",
-		'password' => "Lukas2610!",
-		'database' => "d265130_lp2wbu",
+		'user' => "",
+		'host' => "",
+		'password' => "",
+		'database' => "",
 	);
 	/**
 	 * @var string Email administrátora
 	 */
-	public static $email = 'opava@cerpadla-studny.cz';
+	public static $email = '';
 
 }
